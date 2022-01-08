@@ -1,0 +1,21 @@
+.container{
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+
+
+.footer{
+    
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(14, 84, 105, 0.281);
+    color: white;
+    text-align: center;
+}
+
