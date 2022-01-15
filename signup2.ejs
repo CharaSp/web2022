@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<!-- include style -->
+	<link rel="stylesheet" href="/public/Css/loginstyle.css">
+</head>
+
+<body>
+	
+	<div class="container">
+        <div class="screen">
+            <div class="screen__content">
+                <form class="signup">
+                    <div class="signup__field">
+                        <i class="signup__icon fas fa-user"></i>
+                        <input type="text" class="signup__input" id="frstname" placeholder="First Name">
+                    </div>
+                    <div class="signup__field">
+                        <i class="signup__icon fas fa-lock"></i>
+                        <input type="text" class="signup__input" id="lstname" placeholder="Last Name">
+                    </div>
+                    <div class="signup__field">
+                        <i class="signup__icon fas fa-lock"></i>
+                        <input type="text" class="signup__input"id="emailId" placeholder="Email">
+                    </div>
+                    <div class="signup__field">
+                        <i class="signup__icon fas fa-user"></i>
+                        <input type="text" id="dateofbrth" placeholder="Date of birth" class="signup__input" onfocus="(this.type='date')" onblur="(this.value == '' ? this.type='text' : this.type='date')" id="date">
+                    </div>
+                    <div class="signup__field">
+                        <i class="signup__icon fas fa-lock"></i>
+                        <input type="text" id="usrnameId" class="signup__input" placeholder="Set a username">
+                    </div>
+                    <div class="signup__field">
+                        <i class="signup__icon fas fa-lock"></i>
+                        <input type="password" id="psswordId"class="signup__input" placeholder="Set a password">
+                    </div>
+                    <div class="signup__field">
+                        <i class="signup__icon fas fa-lock"></i>
+                        <input type="password" class="signup__input" placeholder="Confirm password">
+                    </div>
+                    <button class="button login__submit">
+                        <span class="button__text">Sign Up Now</span>
+                        <i onclick="signedupuser()" class="button__icon fas fa-chevron-right"></i>
+                    </button>				
+                </form>
+                <div class="text-center"> Already have an account? <a href="/">Log in</a> </div> 
+            </div>
+            <div class="screen__background">
+                <span class="screen__background__shape screen__background__shape4"></span>
+                <span class="screen__background__shape screen__background__shape3"></span>		
+                <span class="screen__background__shape screen__background__shape2"></span>
+                <span class="screen__background__shape screen__background__shape1"></span>
+            </div>		
+        </div>
+    </div>
+</body>
+
+</html>
