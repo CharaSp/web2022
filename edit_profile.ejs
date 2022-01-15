@@ -28,76 +28,75 @@
                 <div class="screen">
                     <div class="screen__content">
                         <div class="mb-2" style="box-sizing: border-box;
-            width:100px;
-            height:100px;
-            border-radius:50%;
-            margin:0;
-            border:2px solid #787878;
-            padding: 10px;
-            background-color: white;
-            overflow: hidden;
-            transition: all 1s;">
-
+                            width: 100px;
+                            height: 100px;
+                            border-radius: 50%;
+                            margin: 0;
+                            border: 2px solid #787878;
+                            padding: 10px;
+                            background-color: white;
+                            overflow: hidden;
+                            transition: all 1s" ;>
 
                             <div class="mb-2">
                                 <label for="formFile" class="form-label">Default file input example</label>
                                 <input class="form-control" type="file" id="formFile">
                                 <input type="file" id="exampleInputImage" name="image" accept="image/*">
                             </div>
-
-
-
                         </div>
 
-                        <div class="mb-2">
+                        <div class="mb-2" style="text-align: center;">
                             <h3>
                                 <span class="material-icons">
-                    create
-                </span> Profile
+                            create
+                            </span> <b>Profile</b>
                             </h3>
                         </div>
 
                         <div class="mb-2">
-                            <label for="exampleInputUsername1" class="form-label"><b>Username</b></label>
-                            <input class="form-control" id="exampleInputUsername1">
+                            <label for="exampleInputUsername1"></label>
+                            <input type="text" class="login__input" id="exampleInputUsername1" placeholder="Username">
                         </div>
 
                         <div class="mb-2">
-                            <label for="exampleInputEmail1" class="form-label"><b>Email address</b></label>
-                            <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            <div id="emailHelp" class="form-text" style="color: #acacac;"> We'll never share your email with anyone else</div>
+                            </br>
+                            <label for="exampleInputEmail1"></label>
+                            <input type="text" class="login__input" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
+                            <div id="emailHelp" class="form-text" style="color: #acacac;">
+                                <ensp>We'll never share your email with anyone else</ensp>
+                            </div>
                         </div>
                         <div class="mb-2">
-                            <label for="exampleInputPassword1" class="form-label"><b>New password</b></label>
-                            <span class="material-icons" , style="font-size:15px;">
-                    visibility_off
-                </span><input class="form-control" id="exampleInputPassword1">
+                            <label for="exampleInputPassword1"></label>
+                            <!-- <span class="material-icons" , style="font-size:15px;">
+                        visibility_off
+                        </span> -->
+                            <input type="text" class="login__input" id="exampleInputPassword1" placeholder="New password">
                         </div>
-
+                        <br>
                         <div class="mb-2">
-                            <label for="exampleInputPassword2" class="form-label"><b>Confirm password</b></label>
-                            <span class="material-icons" , style="font-size:15px;">
-                    visibility_off
-                </span>
-                            <input class="form-control" id="exampleInputPassword2" aria-describedby="passwordHelp">
-                            <div id="passwordHelp" class="form-text" style="color: #acacac;">Evaluate your password</div>
+                            <label for="exampleInputPassword2"></label>
+                            <!-- <span class="material-icons" , style="font-size:15px;">
+                             visibility_off
+                            </span>-->
+                            <input type="text" class="login__input" id="exampleInputPassword2" placeholder="Confirm password">
+                            <div id="passwordHelp" class="form-text" style="color: #acacac;"> Evaluate your password</div>
                         </div>
-
+                        <br>
                         <div class="mb-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
                                 <label class="form-check-label" for="invalidCheck">
-                    Agree to terms and conditions
-                </label>
+                                    Agree to terms and conditions
+                                </label>
                                 <div class="invalid-feedback">
                                     You must agree before submitting.
                                 </div>
                             </div>
                         </div>
-                        <button onclick=window.location.href='http://localhost:3000/history' class="btn btn-outline- waves-effect" style="color: #000000;"><b>Save</b></button>
-                        <button onclick=window.location.href='http://localhost:3000/covid' class="btn btn-outline waves-effect " style="color: #acacac;"><b>Cancel</b></button>
+                        <button onclick="login()" class="btn btn-outline- waves-effect" style="color: #000000;"><b>Save</b></button>
+                        <button class="btn btn-outline waves-effect " style="color: #acacac;"><b>Cancel</b></button>
                     </div>
-
                     <div class="screen__background">
                         <span class="screen__background__shape screen__background__shape4"></span>
                         <span class="screen__background__shape screen__background__shape3"></span>
@@ -106,7 +105,8 @@
                     </div>
                 </div>
             </div>
-        </form>
+    </div>
+    </form>
     </div>
 
 </body>
@@ -128,14 +128,14 @@
         let response = await axios.post('/login', info)
 
 
-        //     if(password1 != password2){
-        //         alert('Wrong password, try again!')
-        //     }
+        if (password1 != password2) {
+            alert('Wrong password, try again!')
+        }
 
-        //     if(password1 == password2){
-        //      window.location.href='http://localhost:3000/history'
-        //     }
-        // console.log(response);
+        if (password1 == password2) {
+            window.location.href = 'http://localhost:3000/history'
+        }
+        console.log(response);
     }
 </script>
 
