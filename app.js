@@ -37,7 +37,7 @@ app.get('/', function (req, res) {
 
 
 app.get('/signup', function (req, res) {
-    res.render('signup.ejs')
+    res.render('signup2.ejs')
 })
 
 
@@ -165,10 +165,19 @@ app.post('/uploadjson', async function (req, res) {
     })
 })
 
-app.post('/signup', function(req, res) {
+app.post('/signuped',async function(req, res) {
+    const user = req.body;
     console.log(req.body);
 
-    console.log(req.body.userinfo);
+    const sql= `INSERT INTO USER (username,password,firstname,lastname,email,dateofbirth) VALUES('${user.userappname}','${user.userpass}','${user.userfirst}','${user.usersecond}','${user.useremail}','${user.userbirth}')`;
+    let response1;
+    try {
+
+        response1 = await promisePool.query(sql)
+    } catch (error) {
+        console.log('cant insert user info,', error);
+    }
+    
 })
 
 /*app.post('/uploadjson',async function(res,req){
@@ -220,7 +229,21 @@ app.post('/signup', function(req, res) {
     res.send('ok')
 })
 
+
+______________________
+ if(password != ${password}){
+        alert('Wrong password, try again!')
+     }
+
+    if(password1 == password2){
+     window.location.href='http://localhost:3000/history'
+
+
 */
+
+
+
+
 
 
 
