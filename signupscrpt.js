@@ -14,15 +14,18 @@ async function signedupuser() {
         userappname: usrnmeId,
         userpass: psswrdId
     }
-    let response = await axios.post('/signup', userinfo)
+    console.log(userinfo.userfirst)
+    let response1 = await axios.post('/signuped', userinfo)
+     console.log(response1)
     /*if (password1 != password2) {
         alert('Wrong password, try again!')
     }
     if (password1 == password2) {
         window.location.href = 'http://localhost:3000/history'
     }*/
-    console.log(response);
-    console.log("Hi");
 }
+   //console.log(response1);}
+
+
 
 
