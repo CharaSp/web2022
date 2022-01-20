@@ -21,11 +21,11 @@
 
     <title>Case Report Covid 19 </title>
 
-    <h2> LOGO </h2>
 
 </head>
 
 <body>
+    <img src="C:\Users\user\Desktop\projWEB\slogo_transparent.png" style="height: 80px; width: 130px;">
     <br><br><br>
 
     <div style="display: flex; justify-content: center; flex-direction: center; height: 100vh;">
@@ -41,15 +41,16 @@
                             </h3>
                         </div>
 
+                        <br><br>
 
                         <div class="mb-3">
-                            <label for="exampleInputFirstName1" class="form-label"><b>First Name</b></label>
-                            <input class="form-control" id="exampleInputFirstName1">
+                            <label for="exampleInputFirstName1"></label>
+                            <input type="text" class="login__input" id="exampleInputFirstName1" placeholder="First Name">
                         </div>
 
                         <div class="mb-3">
-                            <label for="exampleInputLastName1" class="form-label"><b>Last Name</b></label>
-                            <input class="form-control" id="exampleInputLastName1">
+                            <label for="exampleInputFirstName1"></label>
+                            <input type="text" class="login__input" id="exampleInputLastName1" placeholder="Last Name">
                         </div>
 
                         <div class="form-check">
@@ -73,10 +74,10 @@
                                 <input type="date" id="exampleInputDate" name="Date">
                                 <input type="submit">
                             </form>
-                            <br><br><br><br><br>
+                            <br><br><br><br>
                             <div class="mb-3">
                                 <input type="file" id="exampleInputImage" name="file">
-                                <br><br>
+                                <br><br><br>
                                 <div style="text-align: left;">
                                     <button onclick="covid_info()" class="btn btn-outline- waves-effect" style="color: #acacac;"><b>Save</b></button>
                                 </div>
@@ -97,21 +98,7 @@
 
 </body>
 
-<script>
-    async function covid_info() {
-        let firstname = document.getElementById('exampleInputFirstName1').value;
-        let lastname = document.getElementById('exampleInputLastName1').value;
-        // let date= document.getElementById('exampleInputDate').value;
-
-        let info = {
-            fname: firstname,
-            lname: lastname,
-            // Date: date
-        }
-        let response = await axios.post('/covid_info', info)
-        console.log(response);
-    }
-</script>
+<script src="/public/javascript/covidscript.js"></script>
 
 
 </html>
