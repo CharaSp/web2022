@@ -20,11 +20,14 @@
   </head>
 
   <body>
-      <div class="container">
-          <div class="upper">
+    <div class="container">
+      <div class="screen">
+          <div class="screen__content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                   <div class="container-fluid">
-                    <img src="C:\Users\user\Desktop\projWEB\slogo_transparent.png" style="height: 80px; width: 130px;">
+                    <div class="logo1">
+                         <img src="cover_photo.png" alt="logo">
+                    </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                       <span class="navbar-toggler-icon"></span>
                     </button>
@@ -42,9 +45,9 @@
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Δήλωση Κρούσματος</a></li>
-                            <li><a class="dropdown-item" href="#">Ιστορικό</a></li>
+                            <li><a class="dropdown-item" href="/userhistory">Ιστορικό</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Επεξεργασία Προφίλ</a></li>
+                            <li><a class="dropdown-item" href="/editusrprofile">Επεξεργασία Προφίλ</a></li>
                           </ul>
                         </li>
                         <li class="nav-item">
@@ -58,14 +61,24 @@
                     </div>
                   </div>                         
             </nav>
-          </div> 
+            
+            <div style="height: 500px;" id="my_map"></div>
+            <!--KOYMPI TO PATAS GIA NA EMFANISEI MARKERS-->
+            <button onclick="fetchData()" class="btn btn-outline-success" type="text" >SHowmarkers</button>
+
+            <div class="footer">
+              <p>Thank you and stay safe!</p>
+            </div>
+          </div>
+      </div> 
+    
       
-        <div style="height: 500px;" id="my_map"></div>
-        <div class="footer">
-          <p>Footer</p>
-        </div>
+        <div class="screen__background">
+          <span class="screen__background__shape screen__background__shape2"></span>
+          <span class="screen__background__shape screen__background__shape1"></span>
+
+      </div>
     </div>
-      
       <!--<button type="button" onclick="lala()" class="btn btn-success">Success</button>-->
   </body>
   <script src="/public/Javascript/mainpscrpt.js"></script>
