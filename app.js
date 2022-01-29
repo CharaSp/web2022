@@ -6,6 +6,7 @@ var app = express();
 const mysql = require('mysql2/promise');
 const { promisePool } = require('./config/db_connect');
 const fileupload = require('express-fileupload');
+//const Connection = require('mysql2/typings/mysql/lib/Connection');
 
 
 app.set('view engine', 'ejs');
@@ -59,6 +60,22 @@ app.get('/admin', function (req, res) {
 })
 
 
+//!!!!!!!!!!!!KAINOURGIO ENDPOINT GIA MARKERS
+app.get('/showstores', async function (req, res){
+    
+        const storeshow="SELECT * FROM place";
+        let response2;
+        // εκτελεσε το query
+        try {
+
+            response2 = await promisePool.query(storeshow);
+        } catch (error) {
+            console.log('cant extract stores,', error);
+        }
+        console.log(response2[0]);
+        res.send(response2[0]);
+    })
+ 
 
 app.post('/test', function (req, res) {
 
@@ -71,7 +88,6 @@ app.post('/test', function (req, res) {
     res.send(myVal)
 
 })
-
 
 //app.get('/mainpage', function (req, res) {
 
@@ -89,7 +105,7 @@ app.post('/sentdata', function (req, res) {
     //ti egrapse omws o xroistis?
     const usersearchFor = req.body.writtenData
      
-})
+});
 
 app.post('/', async function (req, res) {
     const username = req.body.user;
@@ -114,7 +130,7 @@ app.post('/', async function (req, res) {
     }
 
     // const sqlQeuryString = `INSERT INTO user(\`username\`, \`password\`, \`email\`) VALUES ('${username}', '${password}', '${email}') `; 
-})
+});
 
 
 app.post('/uploadjson', async function (req, res) {
@@ -163,7 +179,7 @@ app.post('/uploadjson', async function (req, res) {
             console.log('cant insert,', error);
         }
     })
-})
+});
 
 app.post('/signuped',async function(req, res) {
     const user = req.body;
@@ -178,7 +194,7 @@ app.post('/signuped',async function(req, res) {
         console.log('cant insert user info,', error);
     }
     
-})
+});
 
 /*app.post('/uploadjson',async function(res,req){
     
@@ -240,12 +256,3 @@ ______________________
 
 
 */
-
-
-
-
-
-
-
-
-
