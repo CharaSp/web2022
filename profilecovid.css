@@ -7,7 +7,7 @@
 }
 
 body {
-    background: linear-gradient(90deg, #ffffff, #776BCC);
+    background: linear-gradient(90deg, #ffffff, #f1f1f1);
 }
 
 .container {
@@ -18,18 +18,28 @@ body {
 }
 
 .screen {
-    background: linear-gradient(90deg, #5D54A4, #7C78B8);
+    background: linear-gradient(90deg, #fdfdfd, #7C78B8);
     /* opacity: 0.9; */
     position: relative;
     height: 750px;
-    width: 500px;
-    box-shadow: 0px 0px 24px #5C5696;
+    width: 800px;
+    box-shadow: 0px 0px 24px #585858;
 }
 
 .screen__content {
+    text-align: center;
     z-index: 1;
     position: relative;
     height: 100%;
+    margin-top: 25px;
+}
+
+.mb-3{
+    text-align: center;
+}
+
+input[type=checkbox] {
+    transform: scale(1.5);
 }
 
 .screen__background {
@@ -49,8 +59,8 @@ body {
 }
 
 .screen__background__shape1 {
-    height: 650px;
-    width: 900px;
+    height: 520px;
+    width: 520px;
     background: #FFF;
     top: -50px;
     right: 120px;
@@ -84,6 +94,11 @@ body {
     border-radius: 60px;
 }
 
+.form_ckeck {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* .login {
     width: 320px;
