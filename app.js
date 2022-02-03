@@ -107,29 +107,22 @@ app.post('/sentdata', function (req, res) {
      
 });
 
-app.post('/', async function (req, res) {
+app.post('/userlogin', async function(req, res) {
     const username = req.body.user;
 
     const password = req.body.pass;
 
-
-
-    const sqlQeuryString = `SELECT * FROM user WHERE username='${username}' AND password='${password}'`;
+    const sqlQeuryString = `SELECT username,password FROM user WHERE username='${username}' AND password='${password}'`;
     const dataBaseUsersResponse = await promisePool.query(sqlQeuryString);
-    // console.log(dataBaseUsersResponse[0]);
-
-
 
     if (dataBaseUsersResponse[0].length > 0) {
-        res.send('success')
-        console.log('you made it')
-    }
-    else {
-        res.send('fail')
-        console.log('BYEE')
+        res.send('valid');
+        console.log('valid'); //einai xristis kai tupwnetai sto console valid
+    } else {
+        res.send('invalid');
+        console.log('invalid'); //den einai xristis kai tupwnetai sto cosnole invalid
     }
 
-    // const sqlQeuryString = `INSERT INTO user(\`username\`, \`password\`, \`email\`) VALUES ('${username}', '${password}', '${email}') `; 
 });
 
 
@@ -195,6 +188,19 @@ app.post('/signuped',async function(req, res) {
     }
     
 });
+
+app.post('/edit', async function(req, res) {
+    const username = req.body.usern1;
+    const password = req.body.pass1;
+    const user = req.body.usern2;
+    const pass = req.body.pass3;
+    const date = req.body.bdate;
+    const qeurystring = `UPDATE user SET us#5C5696ername='${user}',password='${pass}', dateofbirth='${date}' WHERE username='${username}' AND password='${password}'`;
+    const dataBaseUsersResponse = await promisePool.query(qeurystring);
+    console.log(req.body);
+
+
+})
 
 /*app.post('/uploadjson',async function(res,req){
     
