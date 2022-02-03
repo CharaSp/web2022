@@ -195,7 +195,7 @@ app.post('/edit', async function(req, res) {
     const user = req.body.usern2;
     const pass = req.body.pass3;
     const date = req.body.bdate;
-    const qeurystring = `UPDATE user SET us#5C5696ername='${user}',password='${pass}', dateofbirth='${date}' WHERE username='${username}' AND password='${password}'`;
+    const qeurystring = `UPDATE user SET username='${user}',password='${pass}', dateofbirth='${date}' WHERE username='${username}' AND password='${password}'`;
     const dataBaseUsersResponse = await promisePool.query(qeurystring);
     console.log(req.body);
 
