@@ -7,7 +7,7 @@
 }
 
 body {
-    background: linear-gradient(90deg, #ffffff, #f1f1f1);
+    background: linear-gradient(90deg, #ffffff, #776BCC);
 }
 
 .container {
@@ -18,12 +18,12 @@ body {
 }
 
 .screen {
-    background: linear-gradient(90deg, #fdfdfd, #7C78B8);
+    background: linear-gradient(90deg, #5D54A4, #7C78B8);
     /* opacity: 0.9; */
     position: relative;
     height: 750px;
-    width: 800px;
-    box-shadow: 0px 0px 24px #585858;
+    width: 500px;
+    box-shadow: 0px 0px 24px #5C5696;
 }
 
 .screen__content {
@@ -49,8 +49,8 @@ body {
 }
 
 .screen__background__shape1 {
-    height: 520px;
-    width: 520px;
+    height: 650px;
+    width: 900px;
     background: #FFF;
     top: -50px;
     right: 120px;
