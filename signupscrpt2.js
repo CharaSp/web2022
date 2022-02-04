@@ -1,24 +1,3 @@
-function testpsw() {
-    var testpsw = document.getElementById("psswordId").value;
-    var res;
-    if(testpsw.match(/[a-z]/g) && testpsw.match(/[A-Z]/g) && testpsw.match(/[0-9]/g) && testpsw.match(/[^a-zA-Z\d]/g) && testpsw.length >= 8)
-                window.location.href = "mainpage.ejs";
-                else
-                alert("You need a more powerful password.");
-}
-
-function testpsw2() {
-    var testpsw = document.getElementById("psswordId").value;
-    var testpsw2 = document.getElementById("psswordId2").value;
-    var res;
-    if (testpsw === testpsw2)
-      //console.log("ok");
-      window.location.href = "mainpage.ejs";
-      else if(testpsw !== testpsw2)
-      alert("Wrong password, try again!");
-    
-}
-
 async function signedupuser() {
     var testpsw = document.getElementById("psswordId").value;
     var testpsw2 = document.getElementById("psswordId2").value;
