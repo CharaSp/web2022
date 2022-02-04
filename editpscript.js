@@ -10,7 +10,7 @@ async function edit() {
         window.location.href = 'http://localhost:3000/editprofile';
         return;
     } else if (testpsw.match(/[a-z]/g) && testpsw.match(/[A-Z]/g) && testpsw.match(/[0-9]/g) && testpsw.match(/[^a-zA-Z\d]/g) && testpsw.length >= 8 && testpsw === testpsw2) {
-        window.location.href = 'http://localhost:3000/mainpage'; //mexri edw idio..kai twra pros8etw ajax
+        //mexri edw idio..kai twra pros8etw ajax
         //oti eixa balei se let
         var username1 = $("#username1").val();
         var username2 = $("#username2").val();
@@ -32,8 +32,15 @@ async function edit() {
 
             },
             error: function(xhr, status, error) { console.log(status, error); }, //opws einai kopi peist
-            success: function(response) {} //opws einai kopi peist
-
+            success: function(response) { //opws einai kopi peist
+                if (response == 'invalid') {
+                    alert('Δοκίμασε ξάνα!')
+                    window.location.href = 'http://localhost:3000/editprofile';
+                } else if (response == 'valid') {
+                    alert('Tα στοιχεία αποθηκεύθηκαν!')
+                    window.location.href = 'http://localhost:3000/mainpage';
+                }
+            }
 
 
         });
