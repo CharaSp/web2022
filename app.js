@@ -30,6 +30,18 @@ app.listen(3000, function () {
 
 
 
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!VAR USER NEO!!!!!!!!!!
+// let user = {
+//     username: '',
+//     password:'',
+//     firstame:'',
+//     lastname:'',
+//     email: '',
+//     dateofbirth:'',
+//     userId: '',
+//     admin: 0
+//   }
+
 
 
 app.get('/', function (req, res) {
@@ -125,6 +137,33 @@ app.post('/userlogin', async function(req, res) {
 
 });
 
+//!!!!!!!!!!!!!!!!!!!!!NEO LOGIN!!!!!!!!!!!!!!
+// app.post('/userlogin' , async function (req, res) {
+    
+//     const username= req.body.user;
+//     const password= req.body.pass;
+
+//     const sqlQeuryString = `SELECT * FROM user WHERE username='${username}' AND password='${password}'`;
+//     let dataBaseUsersResponse = await promisePool.query(sqlQeuryString);
+//     //console.log(dataBaseUsersResponse[0]);
+//     user=dataBaseUsersResponse[0];
+
+//     console.log(user);
+//     //u need dis
+//     //console.log(user[0].password);
+
+//       if (user.admin===1) {
+//         res.redirect('/admin')
+//       }
+//       else if(dataBaseUsersResponse[0].length>0)
+//       {
+//         res.send('valid');
+//       }
+//       else{
+//           res.send('invalid');
+//       }
+// });
+
 
 app.post('/uploadjson', async function (req, res) {
     //1 na anevoun ta arxeia ston server
@@ -188,6 +227,28 @@ app.post('/signuped',async function(req, res) {
     }
     
 });
+
+//!!!!!!!!!!!!!!!!!!!!NEO SIGNUP!!!!!!!!!!!!!!
+// app.post('/signuped',async function(req, res) {
+//     //const user = req.body;
+//     user.firstame= req.body.userfirst,
+//     user.lastname=  req.body.usersecond
+//     user.username= req.body.userappname
+//     user.password= req.body.userpass
+//     user.userId= req.body.userId
+//     user.email= req.body.useremail
+//     user.birthday= req.body.userbirth
+
+//     const sql= `INSERT INTO USER (username,password,firstname,lastname,email,dateofbirth,admin) VALUES('${user.username}','${user.password}','${user.firstname}','${user.lastname}','${user.email}','${user.birthday}','0')`;
+//     let response1;
+//     try {
+
+//         response1 = await promisePool.query(sql)
+//     } catch (error) {
+//         console.log('cant insert user info,', error);
+//     }
+    
+// });  
 
 app.post('/edit', async function(req, res) {
     const username = req.body.usern1;
