@@ -13,6 +13,8 @@ async function covidinfo(){
         console.log(covidinfo);
         alert("Επιτυχής καταχώρηση!");
         let covresponse = await axios.post('/sendcovidinfo', covidinfo);
+
+        console.log(covresponse);
     }
     else if(covidinfo.usrpstive!=='on' || covidinfo.covidate==='')
     {
