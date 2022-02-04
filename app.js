@@ -195,10 +195,12 @@ app.post('/edit', async function(req, res) {
     const user = req.body.usern2;
     const pass = req.body.pass3;
     const date = req.body.bdate;
-    const qeurystring = `UPDATE user SET username='${user}',password='${pass}', dateofbirth='${date}' WHERE username='${username}' AND password='${password}'`;
-    const dataBaseUsersResponse = await promisePool.query(qeurystring);
-    console.log(req.body);
-
+    const sql = `UPDATE user SET username='${user}',password='${pass}', dateofbirth='${date}' WHERE username='${username}' AND password='${password}'`;
+    const dataBaseUsersResponse = await promisePool.query(sql);
+    if (dataBaseUsersResponse[0].affectedRows == 0)
+        res.send('invalid');
+    else
+        res.send('valid');
 
 })
 
