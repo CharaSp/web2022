@@ -164,6 +164,27 @@ app.post('/userlogin', async function(req, res) {
 //       }
 // });
 
+////NEO ENDPOINT
+app.post('/userlogout',async function (req, res){
+
+    var user1 = {
+    firstame: req.body.firstame,
+    lastname:  req.body.lastname,
+    username: req.body.username,
+    password: req.body.password,
+    userId: req.body.userId,
+    email: req.body.email,
+    birthday: req.body.dateofbirth,
+    admin:req.body.admin
+    }
+
+    console.log(user1.username);
+
+    res.send(user1.username);
+    console.log("BYEE")
+})
+
+
 
 app.post('/uploadjson', async function (req, res) {
     //1 na anevoun ta arxeia ston server
