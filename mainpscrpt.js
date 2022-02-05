@@ -1,5 +1,5 @@
 //const Connection = require("mysql2/typings/mysql/lib/Connection");
-//για να αρχικοποιησεις ενα χαρτη
+//για να αρχικοποιησεις ενα χαρτη _firstLatLng,_firstPoint,_secondLatLng,_secondPoint,_distance,_length,_polyline,
     var map = L.map('my_map').setView([38.245865, 21.732860], 5);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -16,7 +16,6 @@
         timeout: 10000
     }
 
-
     function success(position) {
         console.log(position);
         const lat = position.coords.latitude;
@@ -26,13 +25,13 @@
 
         const m1 = L.marker([lat, lng]);
 
-        m1.bindPopup('<p> test </p> <button>I\'m here </button>')
+        m1.bindPopup('<p><b> I\'m Here!</b> </p> <button>I\'m here </button>')
         m1.addTo(map)
         map.flyTo([lat, lng], 17)
         
         L.circle({lat, lng},{
             color: 'steelblue',
-            radius:20,
+            radius:40,
             fillColor: 'steelblue',
             opacity: 0.5 
         }).addTo(map)
@@ -46,11 +45,167 @@
 
     //gia thn paron topo8esia sou otan sumdeesai uparxei: to navigator  https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition?retiredLocale=el
     //αναλογα αν πετυχει η διαδικασια εντοπισμου του χρηστη τρεξε mia συναρτηση allios 8a trexei thn allh sunartisi 
-    navigator.geolocation.getCurrentPosition(success, fail, options)
+    navigator.geolocation.getCurrentPosition(success, fail, options);
 
 
-//!!!!!!!!!!SYNARTHSH GIA EMFANISH MARKERS
+async function userSearch() {
+    
+    var leafletIcon1 = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    })
+
+    var leafletIcon2 = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    })
+    
+    var leafletIcon3 = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    })
+    
+    let usrsrch=document.getElementById("searchbar").value;
+
+    let usersearches= {
+        srchbar: usrsrch
+    }
+    //console.log(usersearches.srchbar);
+    let response3 = await axios.post('/usersearch', usersearches);
+    //console.log(response3);
+    const data2 = response3.data;
+    console.log(data2);
+    const today = new Date();
+    var tomorrow = new Date();
+    tomorrow.setDate(new Date().getDate()+1);
+
+    for(let i=0; i<data2.length; i++)
+    {    
+         let poptypes=JSON.parse(data2[i].populartimes);
+         var myMarker1 = L.marker([data2[i].coordinates.x,data2[i].coordinates.y],{icon:leafletIcon1}); 
+         var myMarker2 = L.marker([data2[i].coordinates.x,data2[i].coordinates.y],{icon:leafletIcon2});       
+         var myMarker3 = L.marker([data2[i].coordinates.x,data2[i].coordinates.y],{icon:leafletIcon3});       
+      
+        
+         //console.log(today);
+         //obj me ta name poptimes
+         const myday=poptypes.find(ele=>ele.name==today.toLocaleString('en-us', {weekday:'long'}));
+         const k=today.getHours();
+         
+         const nextday=poptypes.find(ele=>ele.name==tomorrow.toLocaleString('en-us', {weekday:'long'}));
+         //console.log(nextday);
+         const currhour=myday.data[k];
+       
+         if (k<22){
+             nexthour1=myday.data[k+1];
+             nexthour2=myday.data[k+2];
+         } else if(k===22){
+             nexthour1=myday.data[k+1];
+             nexthour2=nextday.data[k];
+         } else if(k===23){
+             nexthour1=nextday.data[k];
+             nexthour2=nextday.data[k+1];
+         }
+
+        if(nexthour1<33){
+            myMarker1.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div> Καταχωρήστε εκτιμώμενο αριθμό ατόμων:`);
+            myMarker1.addTo(map);  
+        }
+        else if(nexthour1> 32 && nexthour1<65){
+            myMarker2.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div> Καταχωρήστε εκτιμώμενο αριθμό ατόμων: `);
+            myMarker2.addTo(map);  
+        }
+        else if(nexthour1>65){
+            myMarker3.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div> Καταχωρήστε εκτιμώμενο αριθμό ατόμων:`);
+            myMarker3.addTo(map);  
+        }
+    }
+}
+
+async function userlogout() {
+
+    let userlog = {
+        username: '',
+        password:'',
+        firstame:'',
+        lastname:'',
+        email: '',
+        dateofbirth:'',
+        userId: '',
+        admin: 0
+        
+    }
+
+    let logresp = await axios.post('/userlogout', userlog);
+    console.log(logresp.data);
+    if(logresp.data==='')
+    {
+        alert("Αποσύνδεση χρήστη");
+        window.location.href=('http://localhost:3000/');
+    }
+}
+         /*var distance = m1.distanceTo([data2[i].coordinates.x,data2[i].coordinates.y]);
+         if(distance<21)
+         {
+             if(
+             {
+                 alert("Μπορουμέ na apothikeusoyme thn topothesia sas?");
+             }
+                //  myMarker1.bindPopup.isOpen()===TRUE || myMarker2.bindPopup.isOpen()===TRUE || myMarker3.bindPopup.isOpen()===TRUE, function(e) {
+                //   alert("Μπορουμέ na apothikeusoyme thn topothesia sas?");
+                // })*/
+            
+             /*console.log(distance);
+         }
+         else
+         {
+            if(nexthour1<33){
+                 myMarker1.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
+                 myMarker1.addTo(map);  
+        }
+             else if(nexthour1> 32 && nexthour1<65){
+                 myMarker2.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
+                 myMarker2.addTo(map);  
+        }
+             else if(nexthour1>65){
+                 myMarker3.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
+                myMarker3.addTo(map);  
+        }
+     }*/
+
+
+
+
+/*//!!!!!!!!!!SYNARTHSH GIA EMFANISH MARKERS
 async function fetchData() {
+    var markerz = $("#").val();
+    $.ajax({
+
+        'url' : 'http://voicebunny.comeze.com/index.php',
+        'type' : 'GET',
+        'data' : {
+            'numberOfWords' : 10
+        },
+        'success' : function(data) {              
+            alert('Data: '+data);
+        },
+        'error' : function(request,error)
+        {
+            alert("Request: "+JSON.stringify(request));
+        }
+    })
     let resp =  await axios.get('/showstores'); //fere dedomena apo vash
     //console.log(resp)
 
@@ -59,18 +214,112 @@ async function fetchData() {
     console.log(data1);
     
     console.log(data1.length);
+    const today = new Date();
+    var tomorrow = new Date();
+    tomorrow.setDate(new Date().getDate()+1);
+    //const myday=today.getDay();   
+    //console.log(myday); 
    // const lati = data1.coordinates.Lat;
    for(let i=0; i<data1.length; i++)
    {    
         let poptypes=JSON.parse(data1[i].populartimes);
-        const myMarker = L.marker([data1[i].coordinates.x,data1[i].coordinates.y]);
-        for(let j=0; j<7; j++)
-        {
-            myMarker.bindPopup(data1[i].name, poptypes[j].name)
+        const myMarker = L.marker([data1[i].coordinates.x,data1[i].coordinates.y]);       
+       
+        //console.log(today);
+        //obj me ta name poptimes
+        const myday=poptypes.find(ele=>ele.name==today.toLocaleString('en-us', {weekday:'long'}));
+        const k=today.getHours();
+        
+        const nextday=poptypes.find(ele=>ele.name==tomorrow.toLocaleString('en-us', {weekday:'long'}));
+        //console.log(nextday);
+        const currhour=myday.data[k];
+      
+        if (k<22){
+            nexthour1=myday.data[k+1];
+            nexthour2=myday.data[k+2];
+        } else if(k===22){
+            nexthour1=myday.data[k+1];
+            nexthour2=nextday.data[k];
+        } else if(k===23){
+            nexthour1=nextday.data[k];
+            nexthour2=nextday.data[k+1];
         }
-        myMarker.addTo(map);
-    }   
-     
+
+        myMarker.bindPopup(`<div><b> ${data1[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
+        myMarker.addTo(map);   
+    }
+   
+}*/
+
+/*async function userSearch2() {
+    let storesresp =  await axios.get('/usersearch'); //fere dedomena apo vash
+    //console.log(storesresp);
+    const data2 = storesresp.data;
+    //console.log(data2);
+
+    const today = new Date();
+    var tomorrow = new Date();
+    tomorrow.setDate(new Date().getDate()+1);
+
+    for(let i=0; i<data2.length; i++)
+    {    
+         let poptypes=JSON.parse(data2[i].populartimes);
+         const myMarker = L.marker([data2[i].coordinates.x,data2[i].coordinates.y]);       
+        
+         //console.log(today);
+         //obj me ta name poptimes
+         const myday=poptypes.find(ele=>ele.name==today.toLocaleString('en-us', {weekday:'long'}));
+         const k=today.getHours();
+         
+         const nextday=poptypes.find(ele=>ele.name==tomorrow.toLocaleString('en-us', {weekday:'long'}));
+         //console.log(nextday);
+         const currhour=myday.data[k];
+       
+         if (k<22){
+             nexthour1=myday.data[k+1];
+             nexthour2=myday.data[k+2];
+         } else if(k===22){
+             nexthour1=myday.data[k+1];
+             nexthour2=nextday.data[k];
+         } else if(k===23){
+             nexthour1=nextday.data[k];
+             nexthour2=nextday.data[k+1];
+         }
+ 
+         myMarker.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
+         myMarker.addTo(map);   
+     }
+}
+
+   /* for(let j=0; j<data2.length; j++)
+   {    
+        const myMarker1 = L.marker([data2[j].coordinates.x,data2[j].coordinates.y]);       
+        myMarker1.addTo(map);   
+   }*/
+
+
+
+        //console.log(myday);
+        
+                
+            //const currhours=poptypes.find(ele=>ele.data[k]==today.getHours());
+            //console.log(currhours);
+            //const temphour=
+                      
+            // console.log(currhour);
+                      //console.log(myday.data[k]);     
+                               
+
+
+
+
+/*
+                if(thishour=today.getHour()){
+                    const temphour=thishour;
+                }
+            
+            }*/
+            
     /*for(let i=0; i<3; i++)
     {    
          let poptypes=JSON.parse(data1[i].populartimes);
@@ -81,10 +330,7 @@ async function fetchData() {
          }
          myMarker.addTo(map) 
     }*/
-}  
-    
-  /*  */
-
+  
 
   /* myMarker.bindPopup(`data1[i].name,"Hello", poptypes[j].name`
        for(let i=0; i<3; i++)
@@ -193,7 +439,7 @@ async function fetchData() {
     
     
 
-    async function sendData(){
+async function sendData(){
         
         let inputvalue= document.getElementById('my_input').value;
 
@@ -205,7 +451,7 @@ async function fetchData() {
         console.log(info.writtenData);
         //milaw me to server(axios) se ayto to endpoint(sentdata)me methodo post kai tou stelnw to info poy einai oti egrapse o xristis.
         await axios.post('/sentdata',info)
-    }
+}
 /*
 //FOR POPULAERTIMES
 let weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()]
