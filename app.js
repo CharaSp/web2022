@@ -250,6 +250,34 @@ app.post('/signuped',async function(req, res) {
     
 // });  
 
+
+//!!!!!!!!!!!!!!!!!endoint gia covidinfo
+app.post('/sendcovidinfo',async function(req,res){
+    const positivecheck = req.body.usrpstive;
+    const whencovid = req.body.covidate; 
+
+    console.log(positivecheck);
+    console.log(whencovid);
+//    const sql= `INSERT INTO USER (username,password,firstname,lastname,email,dateofbirth,admin) VALUES('${user.username}','${user.password}','${user.firstname}','${user.lastname}','${user.email}','${user.birthday}','0')`;
+//FROM user INNER JOIN userhistory ON user.userId=userhistory.userId
+    console.log(user[0].username);
+     if(user[0].username.length>0)
+     {
+         //const usersId= `SELECT userId FROM user INNER JOIN userhistory ON user.userId=userhistory.userId` ;
+         //const userdIdres = await promisePool.query(usersId);
+         //console.log(userdIdres);
+         const usrhascovid = `INSERT INTO userhistory (userId,userpositive,usernegative,dateofcovid)  VALUES( '${user[0].userId}','${positivecheck}','off','${whencovid}')`;
+         const dbaseres=await promisePool.query(usrhascovid);
+         console.log(dbaseres[0]);
+         res.send();
+    }
+     else{
+         alert("Παρακαλώ συνδεθείτε στην εφαρμογή για καταχώρηση των στοιχείων σας");
+         console.log("Παρακαλώ συνδεθείτε στην εφαρμογή για καταχώρηση των στοιχείων σας")
+     }
+});
+
+
 app.post('/edit', async function(req, res) {
     const username = req.body.usern1;
     const password = req.body.pass1;
