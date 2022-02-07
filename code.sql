@@ -30,3 +30,11 @@
     `placevisitedday` DATE,
     FOREIGN KEY (`userId`) REFERENCES user(userId)
   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  
+    CREATE TABLE `admin` (
+    `adminame` varchar(100) NOT NULL unique,
+    `password` varchar(100) NOT NULL,
+    `adminId` INT(10) AUTO_INCREMENT ,
+     `admin` TINYINT(1) NOT NULL,
+     PRIMARY KEY (`userId`)
+     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
