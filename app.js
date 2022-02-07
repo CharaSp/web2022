@@ -71,6 +71,13 @@ app.get('/admin', function (req, res) {
     res.render('adminaddst.ejs')
 })
 
+app.get('/welcome', function(req, res) {
+    res.render('welcome.ejs')
+})
+
+app.get('/adminlogin', function(req, res) {
+    res.render('adminlogin.ejs')
+})
 
 //!!!!!!!!!!!!KAINOURGIO ENDPOINT GIA MARKERS
 app.get('/showstores', async function (req, res){
@@ -163,6 +170,20 @@ app.post('/userlogin', async function(req, res) {
 //           res.send('invalid');
 //       }
 // });
+
+app.post('/admlogin', async function(req, res) {
+    const adminame = req.body.admin;
+    const password = req.body.pass;
+
+    const sqlQeuryString = `SELECT * FROM admin WHERE adminame='${adminame}' AND password='${password}'`;
+    let dataresponse = await promisePool.query(sqlQeuryString);
+    if (dataresponse[0].length > 0)
+        res.send('valid'); //yparxei admin
+    else
+        res.send('invalid'); //den yparxei admin
+
+
+})
 
 ////NEO ENDPOINT
 app.post('/userlogout',async function (req, res){
