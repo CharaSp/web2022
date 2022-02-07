@@ -7,7 +7,8 @@ const mysql = require('mysql2/promise');
 const { promisePool } = require('./config/db_connect');
 const fileupload = require('express-fileupload');
 //const Connection = require('mysql2/typings/mysql/lib/Connection');
-
+// Using encryption lib (install by npm i bcryptjs)
+const bcrypt = require('bcryptjs');
 
 app.set('view engine', 'ejs');
 app.set('views', './views')
@@ -77,6 +78,18 @@ app.get('/welcome', function(req, res) {
 
 app.get('/adminlogin', function(req, res) {
     res.render('adminlogin.ejs')
+})
+
+app.get('/chart', function (req, res) {
+    res.render('chart.ejs')
+})
+
+app.get('/chartcovid', function (req, res) {
+    res.render('chartTotalCovidCases.ejs')
+})
+
+app.get('/chartvisit', function (req, res) {
+    res.render('chartTotalVisits.ejs')
 })
 
 //!!!!!!!!!!!!KAINOURGIO ENDPOINT GIA MARKERS
@@ -149,6 +162,10 @@ app.post('/userlogin', async function(req, res) {
     
 //     const username= req.body.user;
 //     const password= req.body.pass;
+//     const data = req.body;
+//     const sqlQeuryString = `SELECT * FROM USER WHERE username='${data.user}'`;
+//     const dataBaseUsersResponse = await promisePool.query(sqlQeuryString);
+
 
 //     const sqlQeuryString = `SELECT * FROM user WHERE username='${username}' AND password='${password}'`;
 //     let dataBaseUsersResponse = await promisePool.query(sqlQeuryString);
@@ -333,7 +350,9 @@ app.post('/edit', async function(req, res) {
     else
         res.send('valid');
 
-})
+});
+
+
 
 /*app.post('/uploadjson',async function(res,req){
     
