@@ -157,14 +157,47 @@ app.post('/userlogin', async function(req, res) {
 
 });
 
+//από άννα για log in:
+
+app.post('/userlogin', async function(req,res){
+
+    const data = req.body;
+    const sqlQeuryString = `SELECT * FROM USER WHERE username='${data.user}'`;
+    const dataBaseUsersResponse = await promisePool.query(sqlQeuryString);
+
+
+
+    if (dataBaseUsersResponse[0].length > 0) {
+        const hash = dataBaseUsersResponse[0][0]['passwordHash'];
+         //console.log(hash);
+        const verified = bcrypt.compareSync(data.pass, hash);
+        if (verified){
+            res.send('success');
+            console.log('you made it');
+        } else {
+            res.send('fail');
+            console.log('wrong password');
+
+        }
+    }
+    else {
+        res.send('fail')
+        console.log('Wrong Username')
+    }
+
+});
+
+//telos anna gia log in
+
+
+
+
 //!!!!!!!!!!!!!!!!!!!!!NEO LOGIN!!!!!!!!!!!!!!
 // app.post('/userlogin' , async function (req, res) {
     
 //     const username= req.body.user;
 //     const password= req.body.pass;
-//     const data = req.body;
-//     const sqlQeuryString = `SELECT * FROM USER WHERE username='${data.user}'`;
-//     const dataBaseUsersResponse = await promisePool.query(sqlQeuryString);
+
 
 
 //     const sqlQeuryString = `SELECT * FROM user WHERE username='${username}' AND password='${password}'`;
@@ -286,6 +319,68 @@ app.post('/signuped',async function(req, res) {
     }
     
 });
+
+
+
+apo anna part2:
+app.post('/chartvisit2',  async function(req,res)
+{
+    const sqlQeuryString =  `SELECT * FROM userhistory`;
+    
+    let response1;
+    try{ 
+        const dataBaseUsersResponse =  await promisePool.query(sqlQeuryString);
+        response1 = dataBaseUsersResponse[0];
+        console.log(dataBaseUsersResponse[0].length);
+
+    }catch (error){
+        response1=error;
+        console.log('database stuff went wrong:', error);
+    }
+    res.send(response1);
+});
+
+app.post('/chartcovid2',  async function(req,res)
+{
+    const sqlQeuryString = `SELECT * FROM userhistory WHERE userpositive='ON'`;
+        
+    let response2;
+    try{ 
+        const dataBaseUsersResponse =  await promisePool.query(sqlQeuryString);
+        response2 = dataBaseUsersResponse[0];
+        console.log(dataBaseUsersResponse[0].length);
+
+    }catch (error){
+        response2=error;
+        console.log('database stuff went wrong:');
+    }
+    res.send(response2);
+});
+
+app.post('/signuped',async function(req, res) {
+    const user = req.body;
+    console.log(req.body);
+
+    const password_hash = bcrypt.hashSync(user.userpass, 10);
+
+    const sql= `INSERT INTO USER (username,passwordHash,firstname,lastname,email,dateofbirth) VALUES('${user.userappname}','${password_hash}','${user.userfirst}','${user.usersecond}','${user.useremail}','${user.userbirth}')`;
+    let response1;
+    try {
+
+        response1 = await promisePool.query(sql)
+    } catch (error) {
+        //Mine, testing
+        response1=error;
+        //End Mine
+        console.log('cant insert user info,', error);
+    }
+    
+});
+
+telos apo anna
+
+
+
 
 //!!!!!!!!!!!!!!!!!!!!NEO SIGNUP!!!!!!!!!!!!!!
 // app.post('/signuped',async function(req, res) {
