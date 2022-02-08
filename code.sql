@@ -1,6 +1,10 @@
-  CREATE TABLE 'user' (
+  DROP DATABASE IF EXISTS web_project;
+  CREATE DATABASE web_project;
+  USE web_project;
+ 
+ CREATE TABLE 'user' (
     `username` varchar(100) NOT NULL unique,
-    `password` varchar(100) NOT NULL,
+    `passwordHash` TEXT(200) NOT NULL,
     'firstname' varchar(100) NOT NULL,
     'lastname' varchar(100) NOT NULL,
     `userId` INT(10) AUTO_INCREMENT ,
@@ -28,7 +32,19 @@
     `usernegative` varchar(10),
     `dateofcovid` DATE,
     `placevisitedday` DATE,
-    FOREIGN KEY (`userId`) REFERENCES user(userId)
+    FOREIGN KEY (`userId`) REFERENCES user(userId) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (`userId`,`placevisitedday`)
+
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  
+  
+  CREATE TABLE `visits` (
+   `userId` INT(10),
+   `placeId` INT(10),
+   `dateofvisit` DATE,
+   FOREIGN KEY (`userId`) REFERENCES `USER`(`userId`) ON DELETE RESTRICT ON UPDATE CASCADE,
+   FOREIGN KEY (`placeId`) REFERENCES `place`(`placeId`) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (`userId`,`placeId`)
   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
   
     CREATE TABLE `admin` (
