@@ -447,6 +447,91 @@ app.post('/edit', async function(req, res) {
 
 });
 
+let storesecific= {
+    currstore:''
+}
+
+app.post('/usercool',async function (req, res) {
+   
+    const useragree= req.body.useriscool
+    const userlat= req.body.userslat
+    const userlong= req.body.userslong
+    const dayofvisit=req.body.dayofvisit;
+    const hourofvisit=req.body.hourzofvisit
+
+    console.log(useragree);
+    console.log(userlat);
+    console.log(userlong);
+    console.log(dayofvisit);
+    console.log(hourofvisit);
+
+
+    const getstore = `SELECT name FROM place WHERE coordinates = POINT('${userlat}', '${userlong}')`;
+    const dbgetuserinfo = await promisePool.query(getstore);
+    //console.log(dbgetuserinfo[0][0].name);
+    storesecific.currstore=dbgetuserinfo[0][0].name;
+    //console.log(storesecific.currstore);
+    
+    console.log(user[0].username);
+     if(user[0].username.length>0)
+     {
+        const insertstore=`INSERT INTO userhistory (userId,placevisited,placevisitedday,placevisitedhour) VALUES( '${user[0].userId}','${dbgetuserinfo[0][0].name}','${dayofvisit}','${hourofvisit}')`;
+        let dbinsertuserinfo = await promisePool.query(insertstore);
+        console.log(dbinsertuserinfo[0]);
+     }
+
+     res.send('userok');
+})
+
+// var counter=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+// var updatedhour=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+app.post('/userinsert',async function (req, res) {
+   
+    const today = new Date();
+    const hourvisit=today.getHours();
+    var currstoore=storesecific.currstore;
+    console.log(currstoore);
+    const storesusrestim = req.body.userputts;
+
+    var storesusrestimation=(parseInt(storesusrestim));
+    console.log(storesusrestimation);
+    console.log(typeof hourvisit);
+    
+    console.log(user[0].username);
+
+    const insertstore=`UPDATE userhistory SET usersestimation='${storesusrestimation}' WHERE placevisited='${currstoore}' AND userId='${user[0].userId}'`;
+    let dbinsertuserinfo = await promisePool.query(insertstore);
+    console.log(dbinsertuserinfo[0]); 
+
+    const peoplenow=`SELECT count(userId) as usernum,sum(usersestimation) as peoplesum,placevisitedhour FROM userhistory WHERE placevisited='${currstoore}' AND placevisitedhour='${hourvisit}' OR placevisitedhour='${hourvisit-1}' OR placevisitedhour='${hourvisit-2}' GROUP BY placevisitedhour`;
+    
+    let dbstoreinfo = await promisePool.query(peoplenow);
+    console.log(dbstoreinfo[0]);
+    // console.log(dbstoreinfo[0][0].peoplesum);
+    // console.log(dbstoreinfo[0][0].usernum);
+    // console.log(dbstoreinfo[0][0].placevisitedhour); 
+    var vistittime=(dbstoreinfo[0][0].placevisitedhour);
+    var visittime=[0,0,0];
+    var mesosorosatomwnthnwra=[0,0,0];
+    for(let i=0; i<3; i++)
+    {
+        mesosorosatomwnthnwra[i]=Math.round(dbstoreinfo[0][i].peoplesum/dbstoreinfo[0][i].usernum);
+        //console.log(mesosorosatomwnthnwra);
+        visittime[i]=parseInt(dbstoreinfo[0][i].placevisitedhour);
+    }
+
+    var whatineed={
+        visitime: visittime,
+        peoplestimate: mesosorosatomwnthnwra
+    }
+
+    //console.log(whatineed);
+
+    res.send(whatineed);
+
+})
+
 
 
 /*app.post('/uploadjson',async function(res,req){
