@@ -99,7 +99,6 @@ async function userSearch() {
     var tomorrow = new Date();
     tomorrow.setDate(new Date().getDate()+1);
 
-
     for(let i=0; i<data2.length; i++)
     {    
          let poptypes=JSON.parse(data2[i].populartimes);
@@ -108,92 +107,60 @@ async function userSearch() {
          var myMarker3 = L.marker([data2[i].coordinates.x,data2[i].coordinates.y],{icon:leafletIcon3}).on('click', onClick);       
          //map.on('click', onClick);
         
-         async function onClick(){
-            let placecoords=this.getLatLng();
-            console.log(placecoords);
-            let latid2=placecoords.lat;
-            let long2=placecoords.lng;
-            var myposition=await getPosition();
-            var latid1=myposition.coords.latitude;
-            var long1=myposition.coords.longitude;
-            var distance=calcCrow(38.250065,21.738007,latid2,long2).toFixed(1);
-            console.log(distance + "km ");
-            
-            if (distance<=0.02){
-                //window.confirm("Έχετε δυνατοτητα καταχωρησης της επισκεψης σας. Αν πατήσετε οκ συναινείται στην αποθήκευση της τοποθεσίας σας.")
-               if(confirm("Έχετε δυνατοτητα καταχωρησης της επισκεψης σας. Αν πατήσετε οκ συναινείται στην αποθήκευση της τοποθεσίας σας."))
-               {//(confirm("You pressed OK!"))
-                    var useragrees='true';
-        
-                    let userwants={
-                        useriscool: useragrees,
-                        userslat: latid2,
-                        userslong: long2
-                    }            
-                    //console.log(userwants);
-                     let response4 = await axios.post('/usercool', userwants);
-                     var data3=response4.data;
-                     console.log(data3);
-        
-                     //if(data3==='userok')
-        
-                } else {
-                    txt = "Δεν θα γίνει καταψώρηση των στοιχείων σας!";
-                }
-            }   
-        }
-
-        var distance=calcCrow(38.250065,21.738007,data2[i].coordinates.x,data2[i].coordinates.y).toFixed(1);
-
+         
+         var distance=calcCrow(38.24014040000001,21.7452834,data2[i].coordinates.x,data2[i].coordinates.y).toFixed(2);
+         //console.log(distance);
          //console.log(today);
          //obj me ta name poptimes
          const myday=poptypes.find(ele=>ele.name==today.toLocaleString('en-us', {weekday:'long'}));
          const k=today.getHours();
-         
+         //console.log(k);
+
          const nextday=poptypes.find(ele=>ele.name==tomorrow.toLocaleString('en-us', {weekday:'long'}));
          //console.log(nextday);
-         const currhour=myday.data[k];
+         const currhour=k;
        
          if (k<22){
              nexthour1=myday.data[k+1];
              nexthour2=myday.data[k+2];
          } else if(k===22){
              nexthour1=myday.data[k+1];
-             nexthour2=nextday.data[k];
+             nexthour2=nextday.data[0];
          } else if(k===23){
-             nexthour1=nextday.data[k];
-             nexthour2=nextday.data[k+1];
+             nexthour1=nextday.data[0];
+             nexthour2=nextday.data[1];
          }
        
-        var distnnum=parseInt(distance)
+        var distnnum=parseFloat(distance);        
         //console.log(distnnum);
-         if (distnnum<=0.02)
+
+        if(distnnum <=0.02)
         {
             if(nexthour1<33){
-                myMarker1.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Μέσος αριθμός επισκεπτών τις επόμενες 2 ώρες: <br> ${nexthour1}%,${nexthour2}% <br> Καταχωρήστε εκτιμώμενο αριθμό ατόμων: <input type="number" min="0" max="200"class="login__input" id="peoplenum" placeholder="Αριθμός ατόμων τώρα"></div>`);
+                myMarker1.bindPopup(`<div><b> ${data2[i].name}</b><br>Ώρα τώρα:${currhour}<br>Εκτιμώμενη Επισκεψιμότητα τις επόμενες 2 ώρες: <br> ${nexthour1}%, ${nexthour2}% <br>Μέσος αριθμός επισκεπτών τις προηγούμενες 2 ώρες:<br> Καταχωρήστε εκτιμώμενο αριθμό ατόμων: <input type="number" min="0" max="200"class="login__input" id="peoplenum" placeholder="Αριθμός ατόμων τώρα"><button id="userinsert" onclick="usersestimation()">Αποθήκευση</button></div>`);
                 myMarker1.addTo(map);  
             }
             else if(nexthour1> 32 && nexthour1<65){
-                myMarker2.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2}% <br> Καταχωρήστε εκτιμώμενο αριθμό ατόμων: <input type="number" min="0" max="200"class="login__input" id="peoplenum" placeholder="Αριθμός ατόμων τώρα"></div>`);
-                myMarker2.addTo(map);  
+                myMarker2.bindPopup(`<div><b> ${data2[i].name}</b><br>Ώρα τώρα:${currhour}<br>Εκτιμώμενη Επισκεψιμότητα τις επόμενες 2 ώρες: <br> ${nexthour1}%, ${nexthour2}% <br>Μέσος αριθμός επισκεπτών τις επόμενες 2 ώρες:<br> Καταχωρήστε εκτιμώμενο αριθμό ατόμων: <input type="number" min="0" max="200"class="login__input" id="peoplenum" placeholder="Αριθμός ατόμων τώρα"><button id="userinsert" onclick="usersestimation()">Αποθήκευση</button></div>`);
+                myMarker2.addTo(map);    
             }
             else if(nexthour1>=65){
-                myMarker3.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2}% <br>Καταχωρήστε εκτιμώμενο αριθμό ατόμων: <input type="number" min="0" max="200"class="login__input" id="peoplenum" placeholder="Αριθμός ατόμων τώρα"></div>`);
+                myMarker3.bindPopup(`<div><b> ${data2[i].name}</b><br>Ώρα τώρα:${currhour}<br>Εκτιμώμενη Επισκεψιμότητα τις επόμενες 2 ώρες: <br> ${nexthour1}%, ${nexthour2}% <br>Μέσος αριθμός επισκεπτών τις επόμενες 2 ώρες:<br> Καταχωρήστε εκτιμώμενο αριθμό ατόμων: <input type="number" min="0" max="200"class="login__input" id="peoplenum" placeholder="Αριθμός ατόμων τώρα"><button id="userinsert" onclick="usersestimation()">Αποθήκευση</button></div>`);
                 myMarker3.addTo(map);  
             }
-         } 
-       else if( distnnum>0.02)
+        } 
+        else
         {
              if(nexthour1<33){
-                 myMarker1.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Μέσος αριθμός επισκεπτών τις επόμενες 2 ώρες: <br>  ${nexthour1}%,${nexthour2} %</div>`);
+                 myMarker1.bindPopup(`<div><b> ${data2[i].name}</b><br>Ώρα τώρα: ${currhour}<br> Μέσος αριθμός επισκεπτών τις επόμενες 2 ώρες:<br>  ${nexthour1}%, ${nexthour2}% <br>Μέσος αριθμός επισκεπτών τις προηγούμενες 2 ώρες:<br></div>`);
                  myMarker1.addTo(map);  
              }
              else if(nexthour1> 32 && nexthour1<65){
-                 myMarker2.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div> `);
+                 myMarker2.bindPopup(`<div><b> ${data2[i].name}</b><br>Ώρα τώρα: ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%, ${nexthour2}%<br> Μέσος αριθμός επισκεπτών τις προηγούμενες 2 ώρες:<br> </div> `);
                  myMarker2.addTo(map);  
              }
              else if(nexthour1>=65){
-                 myMarker3.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
+                 myMarker3.bindPopup(`<div><b> ${data2[i].name}</b><br>Ώρα τώρα:${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%, ${nexthour2}% <br>Μέσος αριθμός επισκεπτών τις προηγούμενες 2 ώρες:<br> </div>`);
                  myMarker3.addTo(map);  
              }
          }
@@ -201,15 +168,67 @@ async function userSearch() {
 }
 
 
+async function onClick(){
+    let visitday = new Date();
+    let hourz=visitday.getHours();
+    //let visitedday=visitday.getDate()
+    //console.log(hourz);
+    let placecoords=this.getLatLng();
+    console.log(placecoords);
+    let latid2=placecoords.lat;
+    let long2=placecoords.lng;
+    var myposition=await getPosition();
+    var latid1=myposition.coords.latitude;
+    var long1=myposition.coords.longitude;
+    var distance=(calcCrow(38.24014040000001,21.7452834,latid2,long2).toFixed(2));
+    console.log(distance + "km ");
+    
+    if (distance<=0.02){
+        //window.confirm("Έχετε δυνατοτητα καταχωρησης της επισκεψης σας. Αν πατήσετε οκ συναινείται στην αποθήκευση της τοποθεσίας σας.")
+       if(confirm("Έχετε δυνατοτητα καταχωρησης της επισκεψης σας. Αν πατήσετε οκ συναινείται στην αποθήκευση της τοποθεσίας σας."))
+       {//(confirm("You pressed OK!"))
+            var useragrees='true';
 
-    //return coordins;
-    //console.log(latid2,long2);
-    // console.log(latid2,long2);
+            let userwants={
+                useriscool: useragrees,
+                userslat: latid2,
+                userslong: long2,
+                dayofvisit: visitday,
+                hourzofvisit:hourz
+            }            
+            //console.log(userwants);
+             let response4 = await axios.post('/usercool', userwants);
+             var data3=response4.data;
+             console.log(data3);
 
+             //if(data3==='userok')
 
-/*async function distance(){
-    if()
-}*/
+        } else {
+            txt = "Δεν θα γίνει καταψώρηση των στοιχείων σας!";
+        }
+    }  
+} 
+
+async function usersestimation()
+{
+    //console.log(h);
+    
+    let userputs = document.getElementById('peoplenum').value;
+    if(userputs!=='')
+    {
+        alert("Επιτυχής καταχώρηση ατόμων")
+        let infos = {
+            userputts: userputs,
+        }         
+
+        //console.log(infos.userputts);
+
+        var response6 = await axios.post('/userinsert', infos)
+        var data7=response6.data;
+        console.log(data7);
+    }
+}  
+
 
 function calcCrow(lat1, lon1, lat2, lon2) 
 {
@@ -238,17 +257,6 @@ function getPosition(options){
     );
 }
 
-// async function distance(){
-//     var myposition=await getPosition();
-//     var latid1=myposition.coords.latitude;
-//     var long1=myposition.coords.longitude;
-//     // var name1=success();
-//     var name2=onClick();
-//     console.log(name2);
-//     //console.log(calcCrow(latid1,long1,latid2,long2).toFixed(1));
-// }
-
-
 async function userlogout() {
 
     let userlog = {
@@ -271,353 +279,3 @@ async function userlogout() {
         window.location.href=('http://localhost:3000/');
     }
 }
-         /*var distance = m1.distanceTo([data2[i].coordinates.x,data2[i].coordinates.y]);
-         if(distance<21)
-         {
-             if(
-             {
-                 alert("Μπορουμέ na apothikeusoyme thn topothesia sas?");
-             }
-                //  myMarker1.bindPopup.isOpen()===TRUE || myMarker2.bindPopup.isOpen()===TRUE || myMarker3.bindPopup.isOpen()===TRUE, function(e) {
-                //   alert("Μπορουμέ na apothikeusoyme thn topothesia sas?");
-                // })*/
-            
-             /*console.log(distance);
-         }
-         else
-         {
-            if(nexthour1<33){
-                 myMarker1.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
-                 myMarker1.addTo(map);  
-        }
-             else if(nexthour1> 32 && nexthour1<65){
-                 myMarker2.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
-                 myMarker2.addTo(map);  
-        }
-             else if(nexthour1>65){
-                 myMarker3.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
-                myMarker3.addTo(map);  
-        }
-     }*/
-
-
-
-
-/*//!!!!!!!!!!SYNARTHSH GIA EMFANISH MARKERS
-async function fetchData() {
-    var markerz = $("#").val();
-    $.ajax({
-
-        'url' : 'http://voicebunny.comeze.com/index.php',
-        'type' : 'GET',
-        'data' : {
-            'numberOfWords' : 10
-        },
-        'success' : function(data) {              
-            alert('Data: '+data);
-        },
-        'error' : function(request,error)
-        {
-            alert("Request: "+JSON.stringify(request));
-        }
-    })
-    let resp =  await axios.get('/showstores'); //fere dedomena apo vash
-    //console.log(resp)
-
-    const data1=resp.data; //pare dedonena(data) apo pinaka resp
-    
-    console.log(data1);
-    
-    console.log(data1.length);
-    const today = new Date();
-    var tomorrow = new Date();
-    tomorrow.setDate(new Date().getDate()+1);
-    //const myday=today.getDay();   
-    //console.log(myday); 
-   // const lati = data1.coordinates.Lat;
-   for(let i=0; i<data1.length; i++)
-   {    
-        let poptypes=JSON.parse(data1[i].populartimes);
-        const myMarker = L.marker([data1[i].coordinates.x,data1[i].coordinates.y]);       
-       
-        //console.log(today);
-        //obj me ta name poptimes
-        const myday=poptypes.find(ele=>ele.name==today.toLocaleString('en-us', {weekday:'long'}));
-        const k=today.getHours();
-        
-        const nextday=poptypes.find(ele=>ele.name==tomorrow.toLocaleString('en-us', {weekday:'long'}));
-        //console.log(nextday);
-        const currhour=myday.data[k];
-      
-        if (k<22){
-            nexthour1=myday.data[k+1];
-            nexthour2=myday.data[k+2];
-        } else if(k===22){
-            nexthour1=myday.data[k+1];
-            nexthour2=nextday.data[k];
-        } else if(k===23){
-            nexthour1=nextday.data[k];
-            nexthour2=nextday.data[k+1];
-        }
-
-        myMarker.bindPopup(`<div><b> ${data1[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
-        myMarker.addTo(map);   
-    }
-   
-}*/
-
-/*async function userSearch2() {
-    let storesresp =  await axios.get('/usersearch'); //fere dedomena apo vash
-    //console.log(storesresp);
-    const data2 = storesresp.data;
-    //console.log(data2);
-
-    const today = new Date();
-    var tomorrow = new Date();
-    tomorrow.setDate(new Date().getDate()+1);
-
-    for(let i=0; i<data2.length; i++)
-    {    
-         let poptypes=JSON.parse(data2[i].populartimes);
-         const myMarker = L.marker([data2[i].coordinates.x,data2[i].coordinates.y]);       
-        
-         //console.log(today);
-         //obj me ta name poptimes
-         const myday=poptypes.find(ele=>ele.name==today.toLocaleString('en-us', {weekday:'long'}));
-         const k=today.getHours();
-         
-         const nextday=poptypes.find(ele=>ele.name==tomorrow.toLocaleString('en-us', {weekday:'long'}));
-         //console.log(nextday);
-         const currhour=myday.data[k];
-       
-         if (k<22){
-             nexthour1=myday.data[k+1];
-             nexthour2=myday.data[k+2];
-         } else if(k===22){
-             nexthour1=myday.data[k+1];
-             nexthour2=nextday.data[k];
-         } else if(k===23){
-             nexthour1=nextday.data[k];
-             nexthour2=nextday.data[k+1];
-         }
- 
-         myMarker.bindPopup(`<div><b> ${data2[i].name}</b><br> ${currhour}<br> Εκτιμώμενη Προσέλευση τις επόμενες 2 ώρες:<br> ${nexthour1}%,${nexthour2} %</div>`);
-         myMarker.addTo(map);   
-     }
-}
-
-   /* for(let j=0; j<data2.length; j++)
-   {    
-        const myMarker1 = L.marker([data2[j].coordinates.x,data2[j].coordinates.y]);       
-        myMarker1.addTo(map);   
-   }*/
-
-
-
-        //console.log(myday);
-        
-                
-            //const currhours=poptypes.find(ele=>ele.data[k]==today.getHours());
-            //console.log(currhours);
-            //const temphour=
-                      
-            // console.log(currhour);
-                      //console.log(myday.data[k]);     
-                               
-
-
-
-
-/*
-                if(thishour=today.getHour()){
-                    const temphour=thishour;
-                }
-            
-            }*/
-            
-    /*for(let i=0; i<3; i++)
-    {    
-         let poptypes=JSON.parse(data1[i].populartimes);
-         const myMarker = L.marker([data1[i].coordinates.x,data1[i].coordinates.y])
-         for(let j=0; j<7; j++)
-         {
-             console.log(data1[i].name, poptypes[j].name)
-         }
-         myMarker.addTo(map) 
-    }*/
-  
-
-  /* myMarker.bindPopup(`data1[i].name,"Hello", poptypes[j].name`
-       for(let i=0; i<3; i++)
-    {    
-        let poptypes=JSON.parse(data1[i].populartimes);
-        console.log(poptypes[0].name);
-    }*/
-
-  
-    /*for(let i=0; i<3; i++)
-    {
-        console.log(poptypes)
-    }*/
-   /*for(let i=0; i<2; i++)
-    {
-        let poptypes=JSON.parse(data1[i].populartimes);
-        for(let j=0; j<7; j++)
-        {   
-            for(let k=0; k<2; k++)
-            {
-                if(k==1)
-                {
-                    for(l=0; l<24; l++)
-                    {
-                        console.log(poptypes[j].data[K])
-
-                    }
-                }
-            }
-            
-        }   
-    }
-}
-*/
-//   for(let j=0; j<7; j++){ 
-
-   // const long = data1.coordinates.Long;
-
-   /* for(let i=0; i<Object.keys(data1).length; i++)
-    {
-        const myMarker = L.marker([lati, long]);
-        myMarker.addTo(map)
-        
-        
-        
-    }*/
-
-    /*resp.data.map(place=>{
-        let this_marker = L.marker([place.coordinates.lat, place.coordinates.lng]);
-        
-        this_marker.bindPopup(${place.name})
-        this_marker.addTo(map);
-    })*/
-
-    /*for(let i=0; i<data1.length; i++)
-    {
-        const myMarker = L.marker([data1.coordinates.x,data1.coordinates.y]);
-        myMarker.addTo(map)
-    }*/
-
-/*        data1.map(place => {
-            const myMarker = L.marker([place.coordinates.x,place.coordinates.y]);
-            myMarker.bindPopup(`<b>${place.name}'!</b>
-            <br>
-            την αλλη ωρα ειναι αυτο: 12.
-            <br>
-            <input placeholder="# ατομων" type="number"/>
-            <br>
-            <button onclick="userwashere('${place.placeId}')"> Ημουν εδω </button>
-            <br>
-            `);
-            myMarker.addTo(map);
-            }) */
-
-    // για να βαλεις μαρκερς <a class="navbar-brand" href="logo_transparent.png">Logo goes here</a>
-    // ftiaxneis ena marker
-  /*  const myMarker = L.marker([38.245865, 21.732860]);
-    const myMarker1 = L.marker([38.245865, 21.762860]);
-    const myMarker2 = L.marker([38.24577550327074, 21.73570455863372]);
-    const myMarker3 = L.marker([38.24621365531029, 21.733172553512265]);
-    const myMarker4 = L.marker([38.244502077349765, 21.735900553946067]);//μακινα
-    const myMarker5 = L.marker([38.24440938937929, 21.737788828951892]);
-    const myMarker6 = L.marker([38.24490653254032, 21.740363749542258]);
-    const myMarker7 = L.marker([38.24443466790345, 21.740943106646316]);
-    const myMarker8 = L.marker([38.24460319133964, 21.73553577367508]);
-    const myMarker9 = L.marker([38.242190984213174, 21.731624966423308]);
-    const myMarker10 = L.marker([38.24215816244813, 21.730767955082676]);
-    const myMarker11 = L.marker([38.2450502127522, 21.737294499699832]); //συνδετηρας
-    const myMarker12 = L.marker([38.24503463975806, 21.737991161546997]); // ακροβατηης οκατεια
-    
-    
-    
-    myMarker.addTo(map);
-    myMarker1.addTo(map);
-    myMarker2.addTo(map);
-    myMarker3.addTo(map);
-    myMarker4.addTo(map);
-    myMarker5.addTo(map);
-    myMarker6.addTo(map);
-    myMarker7.addTo(map);
-    myMarker8.addTo(map);
-    myMarker9.addTo(map);
-    myMarker10.addTo(map);
-    myMarker11.addTo(map);
-    myMarker12.addTo(map);*/
-    
-    
-
-async function sendData(){
-        
-        let inputvalue= document.getElementById('my_input').value;
-
-        let info =
-        {
-            writtenData: inputvalue
-        }
-
-        console.log(info.writtenData);
-        //milaw me to server(axios) se ayto to endpoint(sentdata)me methodo post kai tou stelnw to info poy einai oti egrapse o xristis.
-        await axios.post('/sentdata',info)
-}
-/*
-//FOR POPULAERTIMES
-let weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()]
-  
-for(let i=0; i<7; i++)
-{
-    for(let j=0; j<2; i++)
-    {
-        for(let k=0; k<7; k++)
-        {
-            switch(weekday)
-            {
-                case 'Monday':
-
-
-                for(let i=0; i<data1.length; i++)
-                {
-                    for(let j=0; j<7; j++){
-                        data1[i].populartimes[j].name
-                        for(let k=0; k<2; k++){
-                            if (k==1){        
-                                for(let l=0; l<24; l++){
-                                   data1[i].populartimes[j][k][l]}}}
-                    break;
-
-                case 'Tuesday':
-                    printf("%.1lf - %.1lf = %.1lf",n1, n2, n1-n2);
-                    break;
-
-                case 'Wednesday':
-                    printf("%.1lf * %.1lf = %.1lf",n1, n2, n1*n2);
-                    break;
-
-                case 'Thursday':
-                    printf("%.1lf / %.1lf = %.1lf",n1, n2, n1/n2);
-                    break;
-
-                case 'Friday':
-                    printf("%.1lf / %.1lf = %.1lf",n1, n2, n1/n2);
-                    break;
-
-                case 'Saturday':
-                    printf("%.1lf / %.1lf = %.1lf",n1, n2, n1/n2);
-                    break;
-
-                case 'Sunday':
-                    printf("%.1lf / %.1lf = %.1lf",n1, n2, n1/n2);
-                    break;
-            }
-        }
-            // operator doesn't match any case constant +, -, *, /
-    default:
-        printf("Error! operator is not correct");
-}*/
