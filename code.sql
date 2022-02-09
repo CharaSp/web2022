@@ -4,7 +4,7 @@
  
  CREATE TABLE `user` (
     `username` varchar(100) NOT NULL unique,
-    `password` varchar(100) NOT NULL,
+    `passwordHash` TEXT(200) NOT NULL,
     'firstname' varchar(100) NOT NULL,
     'lastname' varchar(100) NOT NULL,
     `userId` INT(10) AUTO_INCREMENT ,
