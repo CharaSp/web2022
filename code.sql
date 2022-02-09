@@ -65,6 +65,5 @@
     `adminame` varchar(100) NOT NULL unique,
     `password` varchar(100) NOT NULL,
     `adminId` INT(10) AUTO_INCREMENT ,
-     `admin` TINYINT(1) NOT NULL,
-     PRIMARY KEY (`userId`)
+     `admin` TINYINT(1) NOT NULL
      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
