@@ -2,9 +2,9 @@
   CREATE DATABASE web_project;
   USE web_project;
  
- CREATE TABLE 'user' (
+ CREATE TABLE `user` (
     `username` varchar(100) NOT NULL unique,
-    `passwordHash` TEXT(200) NOT NULL,
+    `password` varchar(100) NOT NULL,
     'firstname' varchar(100) NOT NULL,
     'lastname' varchar(100) NOT NULL,
     `userId` INT(10) AUTO_INCREMENT ,
@@ -14,7 +14,7 @@
     PRIMARY KEY (`userId`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-  CREATE table 'place' (
+  CREATE table `place` (
     `placeId` INT(10) AUTO_INCREMENT ,
     `name` varchar(100) NOT NULL unique,
     `coordinates` Point NOT NULL,
@@ -27,15 +27,29 @@
   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
   CREATE TABLE `userhistory` (
-    `userId` INT(10),
+    `userId` INT(10) NOT NULL,
+    `placevisited` varchar(100),
+    `placevisitedday` DATE, 
+    `placevisitedhour` INT,
+    `usersestimation` INT ,
+    FOREIGN KEY (`userId`) REFERENCES user(userId),
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+  CREATE TABLE `krousma`(
+    `userId` INT(10) NOT NULL,
     `userpositive` varchar(10),
     `usernegative` varchar(10),
     `dateofcovid` DATE,
-    `placevisitedday` DATE,
-    FOREIGN KEY (`userId`) REFERENCES user(userId) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY (`userId`,`placevisitedday`)
-
+    FOREIGN KEY (`userId`) REFERENCES user(userId),
+    PRIMARY KEY(`userId`, `dateofcovid`)
   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+  INSERT INTO `user` VALUES(`username`,`password`,`firstname`,`lastname`,`email`,`dateofbirth`,`admin`)
+  ('alikali','aLik@l123','Alinka', 'Ntalinka','alinkalinka@hotmail.com','1994-01-21',0),
+  ('adminad','breakC0d##','Jason','Momoa','jasonajason@gmail.com','1989-08-16',1),
+  ('parishilton','ar!Par1sa','Paris','Hilton','parishilton@hotmail.com','1990-04-28',0),
+  ('takipatataki','tak!Rumb@','Takis','Patatakis','takispa@hotmail.com','2002-04-19',0),
+  ('estebanmaria','mp@L@la1k@','Esteban','Marques','estebantaliban@gmail.com','1996-04-25',0);
   
   
   CREATE TABLE `visits` (
