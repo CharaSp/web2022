@@ -342,7 +342,7 @@ app.post('/chartvisit2',  async function(req,res)
 
 app.post('/chartcovid2',  async function(req,res)
 {
-    const sqlQeuryString = `SELECT * FROM userhistory WHERE userpositive='ON'`;
+    const sqlQeuryString = `SELECT * FROM krousma WHERE userpositive='ON'`;
         
     let response2;
     try{ 
