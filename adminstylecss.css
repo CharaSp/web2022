@@ -233,7 +233,6 @@ body {
 	box-shadow: 0px 2px 2px #5C5696;
 	cursor: pointer;
 	transition: .2s;
-    white-space: pre;
 }
 
 .login__submit:active,
